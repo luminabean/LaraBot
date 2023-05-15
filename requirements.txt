@@ -1,5 +1,4 @@
-discord.py
-beautifulsoup4
-dotenv
-requests
-urllib.request
+discord.py>=2.2.3
+bs4>=0.0.1
+python-dotenv>=1.0.0
+requests>=2.30.0

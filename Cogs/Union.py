@@ -41,7 +41,7 @@ class Union(commands.Cog, name="유니온"):
                 guild = guild.get_text().split()
                 guild = guild[1]
                 rank_img_url = soup.select_one('#app > div.card.border-bottom-0 > div > section > div.row.text-center > div:nth-child(3) > section > div > div > img')['src']
-                urllib.request.urlretrieve(rank_img_url, "rank.png")
+                urllib.request.urlretrieve("https:" + rank_img_url, "union_rank.png")
                 rank_name = soup.select_one('#app > div.card.border-bottom-0 > div > section > div.row.text-center > div:nth-child(3) > section > div > div > div').get_text()
                 union_level = soup.select_one(
                     '#app > div.card.border-bottom-0 > div > section > div.row.text-center > div:nth-child(3) > section > div > div > span').get_text()
@@ -58,8 +58,8 @@ class Union(commands.Cog, name="유니온"):
                 # 임베드 변수
                 embed_title = rank_name
                 embed_description = nickname + " / " + world
-                rank_img = discord.File("rank.png", filename="rank.png")
-                daily_coin = (int(power)*86400)/100000000000
+                rank_img = discord.File("union_rank.png", filename="rank.png")
+                daily_coin = round((int(power.replace(",","")) * 86400) / 100000000000, 2)
 
                 # 임베드 양식
                 # 제작자 캐릭터면 루미나 그린색
@@ -83,10 +83,11 @@ class Union(commands.Cog, name="유니온"):
                     else:
                         embed = discord.Embed(title=embed_title, url=url, description=embed_description, color=discord.Color.orange())
                 embed.set_thumbnail(url="attachment://rank.png")
-                embed.add_field(name="", value="")
+                embed.add_field(name="", value="", inline=False)
                 embed.add_field(name="유니온 레벨", value=union_level[3:], inline=False)
-                embed.add_field(name="전투력", value=power, inline=False)
-                embed.add_field(name="일간 획득 코인량", value=daily_coin, inline=True)
+                embed.add_field(name="전투력", value=power, inline=True)
+                embed.add_field(name="", value="", inline=True)
+                embed.add_field(name="일간 획득 코인량", value=str(daily_coin)+"개", inline=True)
                 embed.add_field(name="", value="")
                 embed.set_footer(text=date)
 

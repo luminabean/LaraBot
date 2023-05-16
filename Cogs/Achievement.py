@@ -41,7 +41,7 @@ class Achievement(commands.Cog, name="업적"):
                 guild = guild.get_text().split()
                 guild = guild[1]
                 rank_img_url = soup.select_one('#app > div.card.border-bottom-0 > div > section > div.row.text-center > div:nth-child(4) > section > div > div > img')['src']
-                urllib.request.urlretrieve(rank_img_url, "rank.png")
+                urllib.request.urlretrieve("https:" + rank_img_url, "achievement_rank.png")
                 rank_name = soup.select_one('#app > div.card.border-bottom-0 > div > section > div.row.text-center > div:nth-child(4) > section > div > div > div').get_text()
                 score = soup.select_one(
                     '#app > div.card.border-bottom-0 > div > section > div.row.text-center > div:nth-child(4) > section > div > div > span').get_text().split()[1]
@@ -56,7 +56,7 @@ class Achievement(commands.Cog, name="업적"):
                 # 임베드 변수
                 embed_title = rank_name
                 embed_description = nickname + " / " + world
-                rank_img = discord.File("rank.png", filename="rank.png")
+                rank_img = discord.File("achievement_rank.png", filename="rank.png")
 
                 # 임베드 양식
                 # 제작자 캐릭터면 루미나 그린색

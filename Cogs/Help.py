@@ -8,7 +8,7 @@ class Help(commands.Cog, name="도움말"):
 
     @commands.command(name="도움말")
     async def help(self, ctx):
-        embed = discord.Embed(title="도움말", description="라라봇이 명령어 모음이에요.", color=discord.Color.yellow())
+        embed = discord.Embed(title="도움말", description="라라봇의 명령어 모음이에요.", color=discord.Color.yellow())
         embed.add_field(name="", value="")
         embed.add_field(name="!정보 (캐릭터명)", value="해당 캐릭터의 정보(레벨, 길드, 인기도, 랭킹)를 불러와요.", inline=False)
         embed.add_field(name="!무릉 (캐릭터명)", value="해당 캐릭터의 무릉도장 최고기록 정보와 추천 보스 정보를 불러와요.", inline=False)

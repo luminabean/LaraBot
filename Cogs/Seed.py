@@ -17,7 +17,7 @@ class Seed(commands.Cog, name="더시드"):
                 return name
 
 
-    @commands.command(name="무릉")
+    @commands.command(name="시드")
     async def dojo(self, ctx, nickname):
         url = "https://maple.gg/u/" + nickname  # maple.gg 캐릭터 정보창
 

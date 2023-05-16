@@ -3,7 +3,7 @@ from discord.ext import commands
 from bs4 import BeautifulSoup
 
 
-class Union(commands.Cog, name="유니온"):
+class Achievement(commands.Cog, name="업적"):
     def __init__(self, bot):
         self.bot = bot
 
@@ -17,8 +17,8 @@ class Union(commands.Cog, name="유니온"):
                 return name
 
 
-    @commands.command(name="유니온")
-    async def Union(self, ctx, nickname):
+    @commands.command(name="업적")
+    async def Achievement(self, ctx, nickname):
         url = "https://maple.gg/u/" + nickname  # maple.gg 캐릭터 정보창
 
         response = requests.get(url)
@@ -93,4 +93,4 @@ class Union(commands.Cog, name="유니온"):
 
 
 async def setup(bot):
-    await bot.add_cog(Union(bot))
+    await bot.add_cog(Achievement(bot))

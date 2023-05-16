@@ -78,7 +78,6 @@ class Guild(commands.Cog, name="길드"):
                 embed_description = world
 
                 # 임베드 양식
-                # 월드에 따라 색깔 다르게
                 embed = discord.Embed(title=embed_title, url=url, description=embed_description, color=0x000000)
                 embed.add_field(name="", value="")
                 embed.add_field(name="길드마스터", value=master, inline=False)

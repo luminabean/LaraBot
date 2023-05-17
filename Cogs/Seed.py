@@ -13,7 +13,7 @@ class Seed(commands.Cog, name="더시드"):
         if name.attrs.get('class'):
             class_name = name.attrs.get('class')[0]
             # 'user-summary-list'라는 클래스가 존재하는가?
-            if class_name.startswith('user-summary-list'):
+            if class_name.startswith('user-summary-list') or class_name.startswith('user-summary-no-data'):
                 return name
 
 

@@ -8,7 +8,7 @@ class OnReady(commands.Cog):
 
     # bot 활동 상태 관련 변수
     status = discord.Status.online
-    activity = discord.Game("개미 먹기")
+    activity = discord.Game("바람의 토지령과 바람 그네 타기")
 
 
     @commands.Cog.listener()

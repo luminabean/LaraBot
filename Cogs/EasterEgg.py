@@ -45,7 +45,7 @@ class EasterEgg(commands.Cog, name="이스터에그"):
         await ctx.send("개발자님은 가끔 저에게 '루시드 얼굴 죠아!'라고 외치셨어요.")
 
 
-    @commands.command(name="라라"
+    @commands.command(name="라라")
     async def lara(self, ctx):
         rand = random.randrange(1, 92)
 
@@ -77,7 +77,7 @@ class EasterEgg(commands.Cog, name="이스터에그"):
     async def ilsail(self, ctx):
         rand = random.randrange(1, 5)
 
-        if rand === 1:
+        if rand == 1:
             await ctx.send('흑흑... 스타포스 망했어 ㅜㅜ')
         if rand == 2:
             await ctx.send('흑흑... 큐브 망했어 ㅜㅜ')

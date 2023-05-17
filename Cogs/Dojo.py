@@ -74,6 +74,15 @@ class Dojo(commands.Cog, name="무릉도장"):
                 return name
 
 
+    # 기록이 존재하는지 확인한다
+    def identify_result(self, name):
+        if name.attrs.get('class'):
+            class_name = name.attrs.get('class')[0]
+            # 'user-summary-no-data'라는 클래스가 존재하는가?
+            if class_name.startswith('user-summary-no-data'):
+                return name
+
+
     @commands.command(name="무릉")
     async def dojo(self, ctx, nickname):
         url = "https://maple.gg/u/" + nickname  # maple.gg 캐릭터 정보창
@@ -91,6 +100,12 @@ class Dojo(commands.Cog, name="무릉도장"):
                 print("검색결과가 없습니다.")
                 await ctx.send(nickname + '님의 정보는 존재하지 않는 것 같아요!')
             else:
+                identifier = soup.find_all(self.identify_result)
+
+                if identifier != []:
+                    print("무릉 기록이 없습니다.")
+                    await ctx.send(nickname + '님은 무릉을 친 적이 없는 것 같아요!')
+
                 # 정보 크롤링
                 world = soup.select_one('#user-profile > section > div.row.row-normal > div.col-lg-8 > div > h3 > img')['alt']
                 job = soup.select_one(

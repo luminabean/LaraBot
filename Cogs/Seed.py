@@ -17,13 +17,10 @@ class Seed(commands.Cog, name="더시드"):
                 return name
 
 
-    # 기록이 존재하는지 확인한다
-    def identify_result(self, name):
-        if name.attrs.get('class'):
-            class_name = name.attrs.get('class')[0]
-            # 'user-summary-no-data'라는 클래스가 존재하는가?
-            if class_name.startswith('user-summary-no-data'):
-                return name
+    # 정보가 존재하는지 확인한다
+    def identify_info(self, soup):
+        seed_class = soup.find_all(class_="col-lg-3 col-6 mt-3 px-1")[1]
+        return seed_class.find(class_="user-summary-floor font-weight-bold")
 
 
     @commands.command(name="시드")
@@ -41,11 +38,9 @@ class Seed(commands.Cog, name="더시드"):
 
             if identifier == []:
                 print("검색결과가 없습니다.")
-                await ctx.send(nickname + '님의 정보는 존재하지 않는 것 같아요!')
+                await ctx.send(nickname + '님의 캐릭터 정보는 존재하지 않는 것 같아요!')
             else:
-                identifier = soup.find_all(self.identify_result)
-
-                if identifier != []:
+                if self.identify_info(soup) == None:
                     print("시드 기록이 없습니다.")
                     await ctx.send(nickname + '님은 더시드를 한 적이 없는 것 같아요!')
                 else:

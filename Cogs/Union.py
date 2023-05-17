@@ -13,17 +13,14 @@ class Union(commands.Cog, name="유니온"):
         if name.attrs.get('class'):
             class_name = name.attrs.get('class')[0]
             # 'user-summary-list'라는 클래스가 존재하는가?
-            if class_name.startswith('user-summary-list') or class_name.startswith('user-summary-no-data'):
+            if class_name.startswith('user-summary-list'):
                 return name
 
 
-    # 기록이 존재하는지 확인한다
-    def identify_result(self, name):
-        if name.attrs.get('class'):
-            class_name = name.attrs.get('class')[0]
-            # 'user-summary-no-data'라는 클래스가 존재하는가?
-            if class_name.startswith('user-summary-no-data'):
-                return name
+    # 정보가 존재하는지 확인한다
+    def identify_info(self, soup):
+        union_class = soup.find_all(class_="col-lg-3 col-6 mt-3 px-1")[2]
+        return union_class.find(class_="user-summary-floor font-weight-bold")
 
 
     @commands.command(name="유니온")
@@ -41,13 +38,11 @@ class Union(commands.Cog, name="유니온"):
 
             if identifier == []:
                 print("검색결과가 없습니다.")
-                await ctx.send(nickname + '님의 유니온 정보를 찾을 수 없어요!')
+                await ctx.send(nickname + '님의 정보를 찾을 수 없어요!')
             else:
-                identifier = soup.find_all(self.identify_result)
-
-                if identifier != []:
-                    print("무릉 기록이 없습니다.")
-                    await ctx.send(nickname + '님은 본캐가 아닌 것 같아요!')
+                if self.identify_info(soup) == None:
+                    print("유니온 기록이 없습니다.")
+                    await ctx.send(nickname + '님은 유니온 기록이 없거나 본캐가 아닌 것 같아요!')
                 else:
                     # 정보 크롤링
                     world = soup.select_one('#user-profile > section > div.row.row-normal > div.col-lg-8 > div > h3 > img')['alt']
@@ -57,6 +52,7 @@ class Union(commands.Cog, name="유니온"):
                     guild = guild[1]
                     rank_img_url = soup.select_one('#app > div.card.border-bottom-0 > div > section > div.row.text-center > div:nth-child(3) > section > div > div > img')['src']
                     urllib.request.urlretrieve("https:" + rank_img_url, "union_rank.png")
+                    rank_name = ""
                     rank_name = soup.select_one('#app > div.card.border-bottom-0 > div > section > div.row.text-center > div:nth-child(3) > section > div > div > div').get_text()
                     union_level = soup.select_one(
                         '#app > div.card.border-bottom-0 > div > section > div.row.text-center > div:nth-child(3) > section > div > div > span').get_text()
@@ -106,9 +102,11 @@ class Union(commands.Cog, name="유니온"):
                     embed.add_field(name="", value="")
                     embed.set_footer(text=date)
 
-
-                    await ctx.send(nickname + '님의 유니온 정보를 불러왔어요!')
-                    await ctx.channel.send(embed=embed, file=rank_img)
+                    if rank_name == "":
+                        await ctx.send(nickname + "님은 본캐가 아닌 것 같아요!")
+                    else:
+                        await ctx.send(nickname + '님의 유니온 정보를 불러왔어요!')
+                        await ctx.channel.send(embed=embed, file=rank_img)
         else:
             print(response.status_code)
 

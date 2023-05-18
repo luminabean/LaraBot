@@ -20,7 +20,7 @@ class Achievement(commands.Cog, name="업적"):
     # 정보가 존재하는지 확인한다
     def identify_info(self, soup):
         achievement_class = soup.find_all(class_="col-lg-3 col-6 mt-3 px-1")[3]
-        return achievement_class.find(class_="user-summary-floor font-weight-bold")
+        return achievement_class.find(class_="user-summary-tier-string font-weight-bold")
 
 
     @commands.command(name="업적")

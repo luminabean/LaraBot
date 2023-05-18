@@ -20,7 +20,7 @@ class Union(commands.Cog, name="유니온"):
     # 정보가 존재하는지 확인한다
     def identify_info(self, soup):
         union_class = soup.find_all(class_="col-lg-3 col-6 mt-3 px-1")[2]
-        return union_class.find(class_="user-summary-floor font-weight-bold")
+        return union_class.find(class_="user-summary-tier-string font-weight-bold")
 
 
     @commands.command(name="유니온")

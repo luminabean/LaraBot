@@ -131,15 +131,17 @@ class Dojo(commands.Cog, name="무릉도장"):
                     if nickname == "탠루나" or nickname == "나방콩":
                         embed = discord.Embed(title=embed_title, url=url, description=embed_description, color=0x99E593)
                     # 리부트는 청록색
-                    elif world == "리부트" or world == "리부트2":
-                        # 제작자가 속한 길드의 유저라면 밝은 회색
-                        if guild == "그리폰":
-                            embed = discord.Embed(title=embed_title, url=url, description=embed_description,color=discord.Color.light_gray())
+                    elif world == "리부트":
+                        # 제작자가 속한 길드의 유저라면 무궁화색
+                        if guild == "미모" or guild == "류도" or guild == "가온누리" or guild == "별다방":
+                            embed = discord.Embed(title=embed_title, url=url, description=embed_description, color=0xE1A8A5)
                         # 제작자 1인 길드 소속 캐릭터면 루미나 그린색
                         elif guild == "심포니":
                             embed = discord.Embed(title=embed_title, url=url, description=embed_description, color=0x99E593)
                         else:
                             embed = discord.Embed(title=embed_title, url=url, description=embed_description,color=discord.Color.teal())
+                    elif world == "리부트2":
+                        embed = discord.Embed(title=embed_title, url=url, description=embed_description, color=discord.Color.teal())
                     # 일반섭은 주황색
                     else:
                         # 제작자 1인 길드 소속 캐릭터면 루미나 옐로우색

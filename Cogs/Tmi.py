@@ -1,13 +1,15 @@
 import discord, asyncio, random
+from discord import app_commands
 from discord.ext import commands
+from discord import Interaction
 
-class Tmi(commands.Cog, name="Tmi"):
-    def __init__(self, bot):
+class Tmi(commands.Cog):
+    def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
 
-    @commands.command(name="TMI")
-    async def tmi(self, ctx):
+    @app_commands.command(name="tmi", description="라라봇이 쓸모없는 TMI 정보를 알려줘요.")
+    async def tmi(self, interaction: Interaction):
         rand = random.randrange(1, 46)
         tmi_msg = ""
         tmi_ps = ""
@@ -145,7 +147,7 @@ class Tmi(commands.Cog, name="Tmi"):
         embed.add_field(name="", value="", inline=False)
         embed.add_field(name=tmi_msg, value=tmi_ps, inline=True)
 
-        await ctx.channel.send(embed=embed)
+        await interaction.response.send_message(embed=embed)
 
 
 async def setup(bot):

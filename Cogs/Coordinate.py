@@ -1,10 +1,12 @@
 import discord, asyncio, requests, urllib.request
+from discord import app_commands
 from discord.ext import commands
+from discord import Interaction
 from bs4 import BeautifulSoup
 
 
-class Coordinate(commands.Cog, name="코디"):
-    def __init__(self, bot):
+class Coordinate(commands.Cog):
+    def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
 
@@ -17,8 +19,9 @@ class Coordinate(commands.Cog, name="코디"):
                 return name
 
 
-    @commands.command(name="코디")
-    async def character(self, ctx, nickname):
+    @app_commands.command(name="코디", description="해당 캐릭터의 코디 정보를 불러와요.")
+    @app_commands.describe(nickname="닉네임")
+    async def 코디(self, interaction: Interaction, nickname:str):
         url = "https://maple.gg/u/" + nickname  # maple.gg 캐릭터 정보창
 
         response = requests.get(url)
@@ -32,7 +35,7 @@ class Coordinate(commands.Cog, name="코디"):
 
             if identifier == []:
                 print("검색결과가 없습니다.")
-                await ctx.send(nickname + '님의 정보는 존재하지 않는 것 같아요!')
+                await interaction.response.send_message(nickname + '님의 정보는 존재하지 않는 것 같아요!')
             else:
                 # 정보 크롤링
                 world = soup.select_one('#user-profile > section > div.row.row-normal > div.col-lg-8 > div > h3 > img')['alt']
@@ -103,11 +106,10 @@ class Coordinate(commands.Cog, name="코디"):
                 embed.add_field(name="무기", value=weapon, inline=True)
                 embed.add_field(name="", value="", inline=True)
 
-                await ctx.send(nickname + '님의 코디 정보를 불러왔어요!')
-                await ctx.channel.send(embed=embed, file=char_img)
+                await interaction.response.send_message(nickname + '님의 코디 정보를 불러왔어요!', embed=embed, file=char_img)
         else:
             print(response.status_code)
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot) -> None:
     await bot.add_cog(Coordinate(bot))

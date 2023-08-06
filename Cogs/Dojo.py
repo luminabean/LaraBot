@@ -1,5 +1,7 @@
 import discord, asyncio, requests, urllib.request
+from discord import app_commands
 from discord.ext import commands
+from discord import Interaction
 from bs4 import BeautifulSoup
 
 # 보스 정보
@@ -21,7 +23,7 @@ party_boss = {28: "3카룻, 노멀 시그너스",
               49: "하드 스우, 하드 데미안 / [최소]하드 루시드",
               50: "노멀 듄켈, 하드 루시드 / [최소]노멀 진 힐라, 하드 윌",
               51: "노멀 진 힐라, 하드 윌",
-              53: "[최소]카오스 더스크, 하드 진 힐라, 카오스 가엔슬",
+              53: "[최소]카오스 더스크, 하드 진 힐라",
               54: "카오스 더스크, 하드 진 힐라, 카오스 가엔슬",
               55: "[최소]하드 듄켈",
               56: "하드 듄켈",
@@ -60,8 +62,9 @@ solo_boss = {20: "이지 시그너스",
              67: "[최소]하드 검은 마법사",
              70: "하드 검은 마법사"}
 
-class Dojo(commands.Cog, name="무릉도장"):
-    def __init__(self, bot):
+
+class Dojo(commands.Cog):
+    def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
 
@@ -80,8 +83,9 @@ class Dojo(commands.Cog, name="무릉도장"):
         return dojo_class.find(class_="user-summary-floor font-weight-bold")
 
 
-    @commands.command(name="무릉")
-    async def dojo(self, ctx, nickname):
+    @app_commands.command(name="무릉", description="해당 캐릭터의 무릉도장 최고기록 정보와 추천 보스 정보를 불러와요.")
+    @app_commands.describe(nickname="닉네임")
+    async def 무릉(self, interaction: Interaction, nickname:str):
         url = "https://maple.gg/u/" + nickname  # maple.gg 캐릭터 정보창
 
         response = requests.get(url)
@@ -95,11 +99,11 @@ class Dojo(commands.Cog, name="무릉도장"):
 
             if identifier == []:
                 print("검색결과가 없습니다.")
-                await ctx.send(nickname + '님의 캐릭터 정보는 존재하지 않는 것 같아요!')
+                await interaction.response.send_message(nickname + '님의 캐릭터 정보는 존재하지 않는 것 같아요!')
             else:
                 if self.identify_info(soup) == None:
                     print("무릉 기록이 없습니다.")
-                    await ctx.send(nickname + '님은 무릉을 친 적이 없는 것 같아요!')
+                    await interaction.response.send_message(nickname + '님의 무릉도장 기록을 찾을 수 없어요!')
                 else:
                     # 정보 크롤링
                     world = soup.select_one('#user-profile > section > div.row.row-normal > div.col-lg-8 > div > h3 > img')['alt']
@@ -166,8 +170,7 @@ class Dojo(commands.Cog, name="무릉도장"):
                     embed.set_footer(text=date + "\n추천 보스 정보는 정확하지 않을 수도 있습니다.")
 
 
-                    await ctx.send(nickname + '님의 무릉도장 최고기록 정보를 불러왔어요!')
-                    await ctx.channel.send(embed=embed, file=char_img)
+                    await interaction.response.send_message(nickname + '님의 무릉도장 최고기록 정보를 불러왔어요!', embed=embed, file=char_img)
         else:
             print(response.status_code)
 

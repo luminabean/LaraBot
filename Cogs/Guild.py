@@ -1,5 +1,7 @@
 import discord, asyncio, requests, urllib.request
+from discord import app_commands
 from discord.ext import commands
+from discord import Interaction
 from bs4 import BeautifulSoup
 
 WORLDS = {"스카니아": "scania", "베라": "bera", "루나": "luna",
@@ -9,8 +11,8 @@ WORLDS = {"스카니아": "scania", "베라": "bera", "루나": "luna",
            "리부트": "reboot", "리부트2": "reboot2"}
 
 
-class Guild(commands.Cog, name="길드"):
-    def __init__(self, bot):
+class Guild(commands.Cog):
+    def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
 
@@ -22,9 +24,9 @@ class Guild(commands.Cog, name="길드"):
             if class_name.startswith('view-error'):
                 return name
 
-
-    @commands.command(name="길드")
-    async def character(self, ctx, world, name):
+    @app_commands.command(name="길드", description="해당 길드의 정보(길드마스터명, 길드원수, 길드포인트, 랭킹)를 불러와요.")
+    @app_commands.describe(world="월드명", guild_name="길드명")
+    async def 길드(self, interaction: Interaction, world: str, guild_name: str):
         # 월드명 중복 처리
         if world == "스카":
             world = "스카니아"
@@ -35,12 +37,7 @@ class Guild(commands.Cog, name="길드"):
         if world == "리부트 2":
             world = "리부트2"
 
-        # 순서를 바꿔서 입력
-        if world not in WORLDS.keys():
-            print("순서를 바꿔서 입력한 듯...?")
-            await ctx.send("'!길드 (월드명) (길드명)' 순서대로 입력하셨나요? 제대로 입력해주세요!")
-
-        url = "https://maple.gg/guild/" + WORLDS[world] + "/" + name  # maple.gg 길드 정보창
+        url = "https://maple.gg/guild/" + WORLDS[world] + "/" + guild_name  # maple.gg 길드 정보창
         print(url)
 
         response = requests.get(url)
@@ -55,7 +52,7 @@ class Guild(commands.Cog, name="길드"):
 
             if identifier != []:
                 print("검색결과가 없습니다.")
-                await ctx.send(world + " 월드에는 " + name + ' 길드가 존재하지 않는 것 같아요!')
+                await interaction.response.send(world + " 월드에는 " + guild_name + ' 길드가 존재하지 않는 것 같아요!')
             else:
                 # 정보 크롤링
                 master = soup.select_one('#app > div.card.mt-0 > div.card-header.guild-header > section > div.row.mb-4 > div.col-lg-8 > div > div:nth-child(1) > span > a').get_text()
@@ -66,7 +63,7 @@ class Guild(commands.Cog, name="길드"):
 
                 # 출력 테스트
                 print(f"월드: {world}")
-                print(f"길드명: {name}")
+                print(f"길드명: {guild_name}")
                 print(f"길드마스터: {master}")
                 print(f"길드원수: {population}")
                 print(f"길드포인트: {gp}")
@@ -74,7 +71,7 @@ class Guild(commands.Cog, name="길드"):
                 print(f"월드랭킹: {ranking_world}")
 
                 # 임베드 변수
-                embed_title = name
+                embed_title = guild_name
                 embed_description = world
 
                 # 임베드 양식
@@ -90,8 +87,7 @@ class Guild(commands.Cog, name="길드"):
                 embed.add_field(name="", value="")
 
 
-                await ctx.send(world + " 월드 " + name + '길드의 정보를 불러왔어요!')
-                await ctx.channel.send(embed=embed)
+                await interaction.response.send_message(world + " 월드 " + guild_name + '길드의 정보를 불러왔어요!', embed=embed)
         else:
             print(response.status_code)
 

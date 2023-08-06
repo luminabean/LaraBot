@@ -1,10 +1,12 @@
 import discord, asyncio, requests, urllib.request
+from discord import app_commands
 from discord.ext import commands
+from discord import Interaction
 from bs4 import BeautifulSoup
 
 
-class Character(commands.Cog, name="유저"):
-    def __init__(self, bot):
+class Character(commands.Cog):
+    def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
 
@@ -17,8 +19,9 @@ class Character(commands.Cog, name="유저"):
                 return name
 
 
-    @commands.command(name="정보")
-    async def character(self, ctx, nickname):
+    @app_commands.command(name="정보", description="해당 캐릭터의 정보(레벨, 길드, 인기도, 랭킹)를 불러와요.")
+    @app_commands.describe(nickname="닉네임")
+    async def 정보(self, interaction: Interaction, nickname:str):
         url = "https://maple.gg/u/" + nickname  # maple.gg 캐릭터 정보창
 
         response = requests.get(url)
@@ -32,7 +35,7 @@ class Character(commands.Cog, name="유저"):
 
             if identifier == []:
                 print("검색결과가 없습니다.")
-                await ctx.send(nickname + '님의 정보는 존재하지 않는 것 같아요!')
+                await interaction.response.send_message(nickname + '님의 정보는 존재하지 않는 것 같아요!')
             else:
                 # 정보 크롤링
                 world = soup.select_one('#user-profile > section > div.row.row-normal > div.col-lg-8 > div > h3 > img')['alt']
@@ -115,11 +118,10 @@ class Character(commands.Cog, name="유저"):
                 embed.set_footer(text="maple.gg 마지막 업데이트: " + update_date.lstrip())
 
 
-                await ctx.send(nickname + '님의 정보를 불러왔어요!')
-                await ctx.channel.send(embed=embed, file=char_img)
+                await interaction.response.send_message(nickname + '님의 정보를 불러왔어요!', embed=embed, file=char_img)
         else:
             print(response.status_code)
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot) -> None:
     await bot.add_cog(Character(bot))

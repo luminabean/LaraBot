@@ -1,10 +1,12 @@
 import discord, asyncio, requests, urllib.request
+from discord import app_commands
 from discord.ext import commands
+from discord import Interaction
 from bs4 import BeautifulSoup
 
 
-class Seed(commands.Cog, name="더시드"):
-    def __init__(self, bot):
+class Seed(commands.Cog):
+    def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
 
@@ -22,9 +24,9 @@ class Seed(commands.Cog, name="더시드"):
         seed_class = soup.find_all(class_="col-lg-3 col-6 mt-3 px-1")[1]
         return seed_class.find(class_="user-summary-floor font-weight-bold")
 
-
-    @commands.command(name="시드")
-    async def seed(self, ctx, nickname):
+    @app_commands.command(name="시드", description="해당 캐릭터의 더시드 최고기록 정보를 불러와요.")
+    @app_commands.describe(nickname="닉네임")
+    async def 시드(self, interaction: Interaction, nickname: str):
         url = "https://maple.gg/u/" + nickname  # maple.gg 캐릭터 정보창
 
         response = requests.get(url)
@@ -38,11 +40,11 @@ class Seed(commands.Cog, name="더시드"):
 
             if identifier == []:
                 print("검색결과가 없습니다.")
-                await ctx.send(nickname + '님의 캐릭터 정보는 존재하지 않는 것 같아요!')
+                await interaction.response.send_message(nickname + '님의 캐릭터 정보는 존재하지 않는 것 같아요!')
             else:
                 if self.identify_info(soup) == None:
                     print("시드 기록이 없습니다.")
-                    await ctx.send(nickname + '님은 더시드를 한 적이 없는 것 같아요!')
+                    await interaction.response.send_message(nickname + '님은 더시드를 한 적이 없는 것 같아요!')
                 else:
                     # 정보 크롤링
                     world = soup.select_one('#user-profile > section > div.row.row-normal > div.col-lg-8 > div > h3 > img')['alt']
@@ -101,8 +103,7 @@ class Seed(commands.Cog, name="더시드"):
                     embed.set_footer(text=date)
 
 
-                    await ctx.send(nickname + '님의 더시드 최고기록 정보를 불러왔어요!')
-                    await ctx.channel.send(embed=embed, file=char_img)
+                    await interaction.response.send_message(nickname + '님의 더시드 최고기록 정보를 불러왔어요!', embed=embed, file=char_img)
         else:
             print(response.status_code)
 

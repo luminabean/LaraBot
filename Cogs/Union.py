@@ -1,10 +1,12 @@
 import discord, asyncio, requests, urllib.request
+from discord import app_commands
 from discord.ext import commands
+from discord import Interaction
 from bs4 import BeautifulSoup
 
 
-class Union(commands.Cog, name="유니온"):
-    def __init__(self, bot):
+class Union(commands.Cog):
+    def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
 
@@ -23,8 +25,9 @@ class Union(commands.Cog, name="유니온"):
         return union_class.find(class_="user-summary-tier-string font-weight-bold")
 
 
-    @commands.command(name="유니온")
-    async def Union(self, ctx, nickname):
+    @app_commands.command(name="유니온", description="해당 캐릭터의 유니온 정보(유니온 레벨, 전투력, 일간 획득 코인량)를 불러와요.")
+    @app_commands.describe(nickname="닉네임")
+    async def 유니온(self, interaction: Interaction, nickname: str):
         url = "https://maple.gg/u/" + nickname  # maple.gg 캐릭터 정보창
 
         response = requests.get(url)
@@ -38,11 +41,11 @@ class Union(commands.Cog, name="유니온"):
 
             if identifier == []:
                 print("검색결과가 없습니다.")
-                await ctx.send(nickname + '님의 정보를 찾을 수 없어요!')
+                await interaction.response.send_message(nickname + '님의 정보를 찾을 수 없어요!')
             else:
                 if self.identify_info(soup) == None:
                     print("유니온 기록이 없습니다.")
-                    await ctx.send(nickname + '님은 유니온 기록이 없거나 본캐가 아닌 것 같아요!')
+                    await interaction.response.send_message(nickname + '님은 유니온 기록이 없거나 본캐가 아닌 것 같아요!')
                 else:
                     # 정보 크롤링
                     world = soup.select_one('#user-profile > section > div.row.row-normal > div.col-lg-8 > div > h3 > img')['alt']
@@ -105,10 +108,9 @@ class Union(commands.Cog, name="유니온"):
                     embed.set_footer(text=date)
 
                     if rank_name == "":
-                        await ctx.send(nickname + "님은 본캐가 아닌 것 같아요!")
+                        await interaction.response.send_message(nickname + "님은 본캐가 아닌 것 같아요!")
                     else:
-                        await ctx.send(nickname + '님의 유니온 정보를 불러왔어요!')
-                        await ctx.channel.send(embed=embed, file=rank_img)
+                        await interaction.response.send_message(nickname + '님의 유니온 정보를 불러왔어요!', embed=embed, file=rank_img)
         else:
             print(response.status_code)
 

@@ -24,7 +24,7 @@ class Help(commands.Cog):
         embed.add_field(name="/로얄 (횟수)", value="해당 횟수만큼 로얄스타일 시뮬레이션을 돌려요. (1, 10, 25, 45개 가능)", inline=False)
         embed.add_field(name="/익성비(성비1, 성비2, 성비3, 태성비, 극성비) (레벨)", value="해당 레벨에서 성장의 비약을 먹으면 경험치가 어느정도 올라가는지 알려줘요.", inline=False)
         embed.add_field(name="/몬파(익몬) (레벨)", value="해당 레벨에서 몬파(1~7판), 익몬(260이상 부터)을 돌면 경험치가 어느정도 올라가는지 알려줘요.", inline=False)
-        embed.add_field(name="/일퀘 (레벨)", value="해당 레벨에서 아케인/어센틱 지역 일퀘를 하면 경험치가 어느정도 올라가는지 알려줘요.", inline=False)
+        embed.add_field(name="/일퀘 (레벨)", value="해당 레벨에서 아케인/어센틱 지역 일퀘를 하면 경험치가 어느정도 올라가는지 알려줘요. (200~289 레벨만 지원)", inline=False)
         embed.add_field(name="/보스 (난이도) (보스명)", value="해당 보스의 정보(레벨, 체력, 방어율, 포스, 보상)를 알려줘요.", inline=False)
         embed.add_field(name="/tmi", value="라라봇이 쓸모없는 TMI 정보를 알려줘요.", inline=False)
         embed.add_field(name="", value="", inline=False)

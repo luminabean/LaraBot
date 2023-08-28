@@ -14,5 +14,11 @@ class Boss(commands.Cog):
         await interaction.response.send_message("해당 기능은 미구현이에요 ㅜㅜ")
 
 
+    @app_commands.command(name="보스추천", description="해당 보스의 정보(레벨, 체력, 방어율, 포스, 보상)를 알려줘요.")
+    @app_commands.describe(dojo="무릉 층수", stat="환산 주스탯")
+    async def 보스추천(self, interaction: Interaction, dojo: int, stat: float):
+        await interaction.response.send_message("해당 기능은 미구현이에요 ㅜㅜ")
+
+
 async def setup(bot):
     await bot.add_cog(Boss(bot))

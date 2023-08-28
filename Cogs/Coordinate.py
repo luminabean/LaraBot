@@ -42,9 +42,9 @@ class Coordinate(commands.Cog):
                 world_img_url = soup.select_one('#user-profile > section > div.row.row-normal > div.col-lg-8 > div > h3 > img')['src']
                 urllib.request.urlretrieve("https:" + world_img_url, "world.png")
                 guild = soup.select_one(
-                    '#user-profile > section > div.row.row-normal > div.col-lg-8 > div > div.row.row-normal.user-additional > div.col-lg-2.col-md-4.col-sm-4.col-12')
+                    '#user-profile > section > div.row.row-normal > div.col-lg-8 > div > div.row.row-normal.user-additional > div:nth-child(1) > a')
                 guild = guild.get_text().split()
-                guild = guild[1]
+                guild = guild[0]
                 character_img_url = soup.select_one('#user-profile > section > div.row.row-normal > div.col-lg-4.pt-1.pt-sm-0.pb-1.pb-sm-0.text-center.mt-2.mt-lg-0 > div > div.col-6.col-md-8.col-lg-6 > img')['src']
                 urllib.request.urlretrieve(character_img_url, "character.png")
                 hat = soup.select_one('#user-profile > section > div.row.row-normal > div.col-lg-4.pt-1.pt-sm-0.pb-1.pb-sm-0.text-center.mt-2.mt-lg-0 > div > div.col-6.col-md-4.col-lg-6 > div > div.character-coord__items > div:nth-child(1) > span.character-coord__item-name').get_text()

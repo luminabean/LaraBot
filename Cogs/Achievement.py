@@ -50,9 +50,8 @@ class Achievement(commands.Cog):
                     # 정보 크롤링
                     world = soup.select_one('#user-profile > section > div.row.row-normal > div.col-lg-8 > div > h3 > img')['alt']
                     guild = soup.select_one(
-                        '#user-profile > section > div.row.row-normal > div.col-lg-8 > div > div.row.row-normal.user-additional > div.col-lg-2.col-md-4.col-sm-4.col-12')
+                        '#user-profile > section > div.row.row-normal > div.col-lg-8 > div > div.row.row-normal.user-additional > div:nth-child(1) > a')
                     guild = guild.get_text().split()
-                    guild = guild[1]
                     rank_img_url = soup.select_one('#app > div.card.border-bottom-0 > div > section > div.row.text-center > div:nth-child(4) > section > div > div > img')['src']
                     urllib.request.urlretrieve("https:" + rank_img_url, "achievement_rank.png")
                     rank_name = soup.select_one('#app > div.card.border-bottom-0 > div > section > div.row.text-center > div:nth-child(4) > section > div > div > div').get_text()

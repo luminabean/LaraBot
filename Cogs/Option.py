@@ -1,4 +1,4 @@
-import discord, asyncio, random
+import discord, asyncio
 from discord import app_commands
 from discord.ext import commands
 from discord import Interaction
@@ -41,15 +41,12 @@ class Option(commands.Cog):
         # 임베드 변수
         embed_title = data[1]
         embed_description = "기본 공격력/마력: " + str(data[2])
+        option_msg = f"☆☆☆☆★: {data[3]}\n☆☆☆★★: {data[4]}\n☆☆★★★: {data[5]}\n☆★★★★: {data[6]}\n★★★★★: {data[7]}"
 
         # 임베드 양식
         embed = discord.Embed(title=embed_title, description=embed_description, color=discord.Color.yellow())
         embed.add_field(name="", value="", inline=False)
-        embed.add_field(name="☆☆☆☆★", value=data[3], inline=False)
-        embed.add_field(name="☆☆☆★★", value=data[4], inline=False)
-        embed.add_field(name="☆☆★★★", value=data[5], inline=False)
-        embed.add_field(name="☆★★★★", value=data[6], inline=False)
-        embed.add_field(name="★★★★★", value=data[7], inline=False)
+        embed.add_field(name="추가옵션 정보", value=option_msg, inline=False)
 
         await interaction.response.send_message(embed=embed)
 
@@ -113,15 +110,12 @@ class Option(commands.Cog):
         # 임베드 변수
         embed_title = data[1]
         embed_description = "기본 공격력/마력: " + str(data[2])
+        option_msg = f"☆☆☆☆★: {data[3]}\n☆☆☆★★: {data[4]}\n☆☆★★★: {data[5]}\n☆★★★★: {data[6]}\n★★★★★: {data[7]}"
 
         # 임베드 양식
         embed = discord.Embed(title=embed_title, description=embed_description, color=discord.Color.yellow())
         embed.add_field(name="", value="", inline=False)
-        embed.add_field(name="☆☆☆☆★", value=data[3], inline=False)
-        embed.add_field(name="☆☆☆★★", value=data[4], inline=False)
-        embed.add_field(name="☆☆★★★", value=data[5], inline=False)
-        embed.add_field(name="☆★★★★", value=data[6], inline=False)
-        embed.add_field(name="★★★★★", value=data[7], inline=False)
+        embed.add_field(name="추가옵션 정보", value=option_msg, inline=False)
 
         await interaction.response.send_message(embed=embed)
 
